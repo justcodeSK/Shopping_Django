@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <title>Document</title>
+    <style>
+      body{
+    background-color: #32a8523a;
+}
+#div{
+    width: 50%;
+    background-color: white;
+    height: 20%;
+    padding: 20px 40px 50px 50px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 40px;
+}
+input{
+    width:50%;
+}
+#signup{
+    width: 100%;
+}
+h1{
+    text-align: center;
+}
+input,button,textarea{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+    </style>
+  </head>
+  <body>
+    {% extends 'home.html' %}
+    <br><br><br><br>
+    {% block content %}
+     <div id="div"> 
+      <h1>LOGIN</h1> 
+      <form method="POST" action="login">
+        {% csrf_token %}
+        <p id="checkname"></p> 
+          <div class="mb-3 mt-3"> 
+          <label for="email" class="form-label">UserID:</label> 
+          <input type="email" class="form-control" id="email" placeholder="Enter email" name="email"> 
+        <p id="checkemail"></p> 
+        </div> 
+       
+        <div class="mb-3"> 
+          <label for="pwd" class="form-label">Password:</label> 
+          <div style="display: flex; justify-content: space-between;">
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+            <div id="eyepos">
+              <i id="eye1" class="fa fa-eye" style="font-size:30px"></i>
+              <i id="eye2" class="fa fa-eye-slash" style="font-size:30px"></i>
+            </div>
+          </div>
+          <br><br>
+
+        <button type="submit" class="btn btn-success" id="signup">LogIn</button> 
+      </form> 
+  <script> 
+  $(document).ready(function(){ 
+    $('#checkname').hide(); 
+    $('#checkemail').hide(); 
+    $('#checkaddress').hide(); 
+    $('#checkdob').hide(); 
+    $('#checkpwd').hide(); 
+    $('#checkcpwd').hide()
+    $('#checkgender').hide()
+    $('#eye1').hide()
+    $('#ceye1').hide()
+
+
+
+    var emailerror = true; 
+    var pwderror = true; 
+
+
+    $('#email').keyup(function(){ 
+      email_check() 
+    }); 
+    $('#pwd').keyup(function(){ 
+      pwd_check() 
+    });
+    $('#pwd').bind('copy paste cut',function(e) { 
+      e.preventDefault();
+    });
+
+    $('#eye1').click(function(){ 
+      eyecls() 
+    });
+    $('#eye2').click(function(){ 
+      eyeopn() 
+    });
+    $('#ceye1').click(function(){ 
+      ceyecls() 
+    });
+    $('#ceye2').click(function(){ 
+      ceyeopn() 
+    });
+    
+ });
+
+
+
+ function email_check(){ 
+    let email = $('#email').val(); 
+    let check = /^[A-Za-z_0-9]{3,}[@]{1}[A-Za-z]{3,}[.]{1}[A-Za-z]{2,6}$/; 
+    if (check.test(email)){ 
+      $('#checkemail').hide(); 
+    } 
+    else{ $('#checkemail').show(); 
+      $('#checkemail').html("***Plese type in Email format !"); 
+      $('#checkemail').css('color','red'); 
+      emailerror = false; 
+      return false; 
+    } 
+  }
+
+
+  function pwd_check(){ 
+    let pwd = $('#pwd').val();  
+
+    if (pwd.length == ""){
+      $('#checkpwd').show(); 
+      $('#checkpwd').html("***This field cannot be empty !. !"); 
+      $('#checkpwd').css('color','red'); 
+      pwderror = false; 
+
+    }else if (pwd.length < 8){
+      $('#checkpwd').show(); 
+      $('#checkpwd').html("***Password Must contain 8 or more characters. !"); 
+      $('#checkpwd').css('color','red'); 
+      pwderror = false; 
+
+    } 
+    else{ 
+        let num = /^(?=.*[0-9]).{8,}$/
+        let lower = /^(?=.*[a-z]).{8,}$/
+        let upper = /^(?=.*[A-Z]).{8,}$/
+        let special = /^(?=.*[!@#&()–[{}:;',?/*~$^+=<>]).{8,}$/;
+
+        if (num.test(pwd)==false){ 
+          $('#checkpwd').show(); 
+          $('#checkpwd').html("***Password Must contain at least one number. !"); 
+          $('#checkpwd').css('color','red'); 
+          pwderror = false; 
+          
+        }else if (lower.test(pwd)==false){
+          $('#checkpwd').show(); 
+          $('#checkpwd').html("***Password Must contain at least one lowercase letter. !"); 
+          $('#checkpwd').css('color','red'); 
+          pwderror = false; 
+          
+        }else if (upper.test(pwd)==false){
+          $('#checkpwd').show(); 
+          $('#checkpwd').html("***Password Must contain at least one uppercase. !"); 
+          $('#checkpwd').css('color','red'); 
+          pwderror = false; 
+          
+        }else if (special.test(pwd)==false){
+          $('#checkpwd').show(); 
+          $('#checkpwd').html("***Password Must contain at least one special characters. !"); 
+          $('#checkpwd').css('color','red'); 
+          pwderror = false; 
+          
+        }else{ 
+          $('#checkpwd').hide(); 
+        }   
+    }
+
+  }
+
+ 
+  function eyecls(){ 
+    $('#eye1').hide(); 
+    $('#eye2').show(); 
+    $('#pwd').attr('type','password');
+  }
+  function eyeopn(){
+    $('#eye2').hide(); 
+    $('#eye1').show();
+    $('#pwd').attr('type','text');
+  }
+  function ceyecls(){ 
+    $('#ceye1').hide(); 
+    $('#ceye2').show(); 
+    $('#cpwd').attr('type','password');
+  }
+  function ceyeopn(){
+    $('#ceye2').hide(); 
+    $('#ceye1').show();
+    $('#cpwd').attr('type','text');
+  }
+
+  
+
+</script>
+{% endblock %}
+</body>
+</html>
